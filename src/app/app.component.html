@@ -1,0 +1,113 @@
+<nb-layout class="grid place-items-center">
+    <nb-layout-header style="font-size: larger;font-weight: 600;">Athlete Management Systom</nb-layout-header>
+
+    <nb-layout-column>
+        <nb-card>
+            <nb-card-body>
+
+                <nb-tabset fullWidth="fullWidth">
+                    <nb-tab tabTitle="Create Athlete" tabIcon="people-outline" responsive="responsive">
+                        
+                        <form [formGroup]="form">
+
+                            <nb-card>
+                                <nb-card-body>
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col">
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">First Name :</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" fieldSize="small" nbInput fullWidth status="info" placeholder="First Name" id="firstName" name="firstName" formControlName="firstName">
+                                                </div>
+                                            </div>
+                                
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Last Name :</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" fieldSize="small" nbInput fullWidth status="info" placeholder="Last Name" id="lastName" name="lastName" formControlName="lastName">
+                                                </div>
+                                            </div>
+                                
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Gender :</label>
+                                                <div class="col-sm-8">
+                                                    <nb-select size="small" placeholder="Gender" fullWidth status="info" [(selected)]="selectedItem">
+                                                        <nb-option value="0">Female</nb-option>
+                                                        <nb-option value="1">Male</nb-option>
+                                                    </nb-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label for="inputEmail1" class="label col-sm-4 col-form-label profile-label">Select Date :</label>
+                                                <div class="col-sm-8">
+                                                    <input nbInput fieldSize="small" status="info" fullWidth placeholder="Date of Birth" [nbDatepicker]="formcontrol1" [formControl]="dateOfBirth" >
+                                                    <nb-datepicker #formcontrol1></nb-datepicker>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Country :</label>
+                                                <div class="col-sm-8">
+                                                    <nb-select size="small" placeholder="Country" fullWidth status="info" [(selected)]="selectedCountry">
+                                                        <nb-option *ngFor="let e of countryList" value="e.id"> {{ e }} </nb-option>
+                                                    </nb-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label">Upload a Photo :</label>
+                                                <div class="col-sm-8">
+                                                    <!-- <input #myInput nbInput fullWidth type="file" class="form-control" style="padding: 4px;height: inherit;" status="info" (change)="uploadTest($event.target.files)" name="files" multiple> -->
+                                                    <input #myInput nbInput fullWidth type="file" class="form-control" style="padding: 4px;height: inherit;" status="info" (change)="onFileSelected($event)" accept="image/*" multiple  id="upload" fieldSize="small"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Events :</label>
+                                                <div class="col-sm-8">
+                                                    <nb-select multiple size="small" placeholder="Events" fullWidth status="info" [(selected)]="selectedEvents">
+                                                        <nb-option *ngFor="let e of eventList" value="e.id"> {{ e.groupAndEvent }} </nb-option>
+                                                    </nb-select>
+                                                </div>
+                                            </div>
+        
+                                            <!-- <div class="form-group row">
+                                                <div class="offset-sm-4 col-sm-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-4 col-lg-3">
+                                                            <button fullWidth style="margin: 0.18rem 0rem 0.18rem 0rem;" nbButton status="warning" id="btnClear" (click)="clear()">Clear</button>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-4 col-lg-3">
+                                                            <button fullWidth style="margin: 0.18rem 0rem 0.18rem 0rem;" nbButton status="info" id="submit" (click)="submit()">SUBMIT</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+        
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-0 col">
+                                            <nb-card>
+                                                <nb-card-body>
+                                                </nb-card-body>
+                                            </nb-card>
+                                        </div>
+                                    </div>
+                                    
+                                </nb-card-body>
+                            </nb-card>
+                        </form>
+
+                        
+                                        </nb-tab>
+                                        <nb-tab tabTitle="View Athlete" tabIcon="loader-outline" responsive="responsive">
+                                            <p>List of
+                                                <strong>orders</strong>.</p>
+                                        </nb-tab>
+                                    </nb-tabset>
+
+                                </nb-card-body>
+                            </nb-card>
+                        </nb-layout-column>
+
+                    </nb-layout>
