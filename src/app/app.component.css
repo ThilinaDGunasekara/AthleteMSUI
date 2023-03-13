@@ -1,0 +1,17 @@
+ ::ng-deep .user-picture{
+    width: 180px !important;
+    height: 180px !important;
+ }
+
+ ::ng-deep .user-container{
+    display: block !important;  
+    margin-left: auto !important; 
+    margin-right: auto !important;
+ }
+
+ /* .teachers-box nb-user .user-name,
+.teachers-box nb-user .user-title,
+.teachers-box nb-user .user-picture,
+.teachers-box nb-icon {
+  
+} */
