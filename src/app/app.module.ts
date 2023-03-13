@@ -7,6 +7,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { RouterTestingModule } from "@angular/router/testing";
 import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,8 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NbAlertModule,
     NbToastrModule.forRoot(),
     NbUserModule,
-    NbButtonModule
-
+    NbButtonModule,
+    BrowserAnimationsModule,
     
   ],
   providers: [NgbActiveModal, ],

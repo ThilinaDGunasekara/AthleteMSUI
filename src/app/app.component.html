@@ -28,12 +28,20 @@
                                                 </div>
                                             </div>
                                 
+                                            <!-- <div class="form-group row" style="margin-bottom: 5px">
+                                                <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Gender :</label>
+                                                <div class="col-sm-8">
+                                                    <nb-select size="small" placeholder="Gender" fullWidth status="info" [formControl]="selectedGender">
+                                                        <nb-option value="Female">Female</nb-option>
+                                                        <nb-option value="Male">Male</nb-option>
+                                                    </nb-select>
+                                                </div>
+                                            </div> -->
                                             <div class="form-group row" style="margin-bottom: 5px">
                                                 <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Gender :</label>
                                                 <div class="col-sm-8">
-                                                    <nb-select size="small" placeholder="Gender" fullWidth status="info" [(selected)]="selectedItem">
-                                                        <nb-option value="0">Female</nb-option>
-                                                        <nb-option value="1">Male</nb-option>
+                                                    <nb-select size="small" placeholder="Gender" fullWidth status="info" formControlName="selectedGender">
+                                                        <nb-option *ngFor="let g of genderList" [value]="g"> {{ g }} </nb-option>
                                                     </nb-select>
                                                 </div>
                                             </div>
@@ -41,7 +49,7 @@
                                             <div class="form-group row" style="margin-bottom: 5px">
                                                 <label for="inputEmail1" class="label col-sm-4 col-form-label profile-label">Select Date :</label>
                                                 <div class="col-sm-8">
-                                                    <input nbInput fieldSize="small" status="info" fullWidth placeholder="Date of Birth" [nbDatepicker]="formcontrol1" [formControl]="dateOfBirth" >
+                                                    <input nbInput fieldSize="small" status="info" fullWidth placeholder="Date of Birth" [nbDatepicker]="formcontrol1" formControlName="dateOfBirth" >
                                                     <nb-datepicker #formcontrol1></nb-datepicker>
                                                 </div>
                                             </div>
@@ -49,8 +57,8 @@
                                             <div class="form-group row" style="margin-bottom: 5px">
                                                 <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Country :</label>
                                                 <div class="col-sm-8">
-                                                    <nb-select size="small" placeholder="Country" fullWidth status="info" [(selected)]="selectedCountry">
-                                                        <nb-option *ngFor="let e of countryList" value="e.id"> {{ e }} </nb-option>
+                                                    <nb-select size="small" placeholder="Country" fullWidth status="info" formControlName="selectedCountry">
+                                                        <nb-option *ngFor="let e of countryList" [value]="e"> {{ e }} </nb-option>
                                                     </nb-select>
                                                 </div>
                                             </div>
@@ -59,15 +67,15 @@
                                                 <label class="label col-sm-4 col-form-label">Upload a Photo :</label>
                                                 <div class="col-sm-8">
                                                     <!-- <input #myInput nbInput fullWidth type="file" class="form-control" style="padding: 4px;height: inherit;" status="info" (change)="uploadTest($event.target.files)" name="files" multiple> -->
-                                                    <input #myInput nbInput fullWidth type="file" class="form-control" style="padding: 4px;height: inherit;" status="info" (change)="onFileSelected($event)" accept="image/*" multiple  id="upload" fieldSize="small"/>
+                                                    <input formControlName="myInput" #myInput nbInput fullWidth type="file" class="form-control" style="padding: 4px;height: inherit;" status="info" (change)="onFileSelected($event)" accept="image/*" multiple  id="upload" fieldSize="small"/>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row" style="margin-bottom: 5px">
                                                 <label class="label col-sm-4 col-form-label" style="font-size: 0.8rem !important;">Events :</label>
                                                 <div class="col-sm-8">
-                                                    <nb-select multiple size="small" placeholder="Events" fullWidth status="info" [(selected)]="selectedEvents">
-                                                        <nb-option *ngFor="let e of eventList" value="e.id"> {{ e.groupAndEvent }} </nb-option>
+                                                    <nb-select multiple size="small" placeholder="Events" fullWidth status="info" formControlName="selectedEvents">
+                                                        <nb-option *ngFor="let e of eventList" [value]="e.groupAndEvent"> {{ e.groupAndEvent }} </nb-option>
                                                     </nb-select>
                                                 </div>
                                             </div>
@@ -94,13 +102,20 @@
                                                                 <nb-user size="giant"
                                                                     name=""
                                                                     title=""
-                                                                    [picture]="base64image">
+                                                                    [picture]="base64CompressedImage">
                                                                 </nb-user>
                                                         </nb-card-body>
                                                     </nb-card>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col">
-                                                    <button size="small" nbButton fullWidth hero status="primary">SAVE</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <button size="small" fullWidth hero nbButton status="warning" id="clear" style="margin-bottom: 5px" (click)="clear()">CLEAR</button>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                            <button size="small" nbButton fullWidth hero status="primary" style="margin-bottom: 5px" (click)="save()">SAVE</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
