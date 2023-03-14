@@ -8,6 +8,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,9 +34,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NbUserModule,
     NbButtonModule,
     BrowserAnimationsModule,
+    HttpClientModule
     
   ],
-  providers: [NgbActiveModal, ],
+  providers: [NgbActiveModal,HttpClientModule,BrowserModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

@@ -1,9 +1,13 @@
+import { formatDate } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NbComponentStatus, NbGlobalPhysicalPosition, NbGlobalPosition, NbIconConfig } from '@nebular/theme';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ApiResponse } from './model/ApiResponse';
+import { AthleteData } from './model/AthleteData';
 import { AthlrteEvent } from './model/AthlrteEvent';
 import { AlertService } from './service/alert.service';
+import { AthleteService } from './service/Athlete.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +16,7 @@ import { AlertService } from './service/alert.service';
 })
 export class AppComponent {
 
-  
+  athleteData: AthleteData = new AthleteData();
   title = 'AthleteMSUI';
 
   bellIconConfig: NbIconConfig = { icon: 'bell-outline', pack: 'eva' };
@@ -33,12 +37,14 @@ export class AppComponent {
     dateOfBirth: new FormControl(),
     selectedCountry: new FormControl(),
     selectedEvents: new FormControl(),
-    myInput: new FormControl()
+    myInput: new FormControl(),
+    nic: new FormControl()
   });
 
   constructor(
     private config: NgbModalConfig,
     private alertService: AlertService,
+    private athleteService: AthleteService,
   ) {
    
     config.backdrop = 'static';
@@ -356,9 +362,9 @@ export class AppComponent {
       reader.readAsDataURL(file);
       reader.onload = function () {
         //me.modelvalue = reader.result;
-        console.log("base64Image :::::::::::::::::::::::::>>>>>>>>> ",reader.result);
         const base64image = reader.result?.valueOf();
         console.log("base64Image :::::::::::::::::::::::::>>>>>>>>> ",base64image);
+
 
         me.base64CompressedImage= me.base64image;
 
@@ -375,6 +381,7 @@ export class AppComponent {
   clear() {
     this.form.reset();
     this.base64image='';
+    this.athleteData = new AthleteData();
   }
 
 
@@ -383,19 +390,23 @@ export class AppComponent {
 
     let firstName = this.form.get('firstName')?.value;
     let lastName = this.form.get('lastName')?.value;
+    let nicNo = this.form.get('nic')?.value;
     let selectedGender = this.form.get('selectedGender')?.value;
     let dateOfBirth = this.form.get('dateOfBirth')?.value;
     let selectedCountry = this.form.get('selectedCountry')?.value;
     let selectedEvents = this.form.get('selectedEvents')?.value;
+    
 
     console.log("firstName       >>>>>>>>>>>>>  ",firstName);
     console.log("lastName        >>>>>>>>>>>>>  ",lastName);
+    console.log("nicNo           >>>>>>>>>>>>>  ",nicNo);
     console.log("selectedGender  >>>>>>>>>>>>>  ",selectedGender);
     console.log("dateOfBirth     >>>>>>>>>>>>>  ",dateOfBirth);
     console.log("selectedCountry >>>>>>>>>>>>>  ",selectedCountry);
     console.log("selectedEvents  >>>>>>>>>>>>>  ",selectedEvents);
+    
 
-
+    const validateNIC = /^[0-9]{9}[V|v]$|^[0-9]{12}$/;
 
 
     if(firstName === null|| firstName === ''){
@@ -403,6 +414,9 @@ export class AppComponent {
       return;
     }else if(lastName === null|| lastName === ''){
       this.alertService.showAlertToast(this.warningStatus, true, 20000, true, this.position, true, "Warning!", "Please enter last name.");
+      return;
+    }else if (!validateNIC.test(nicNo)) {
+      this.alertService.showAlertToast(this.warningStatus, true, 20000, true, this.position, true, "Warning!", "Entered NIC not in correct pattern.");
       return;
     }else if(selectedGender === null|| selectedGender === ''){
       this.alertService.showAlertToast(this.warningStatus, true, 20000, true, this.position, true, "Warning!", "Please select gender.");
@@ -421,8 +435,29 @@ export class AppComponent {
       return;
     }  else{
       console.log("I'm in................");
-
+      this.athleteData.firstName = firstName;
+      this.athleteData.lastName = lastName;
+      this.athleteData.athleteId = nicNo;
+      this.athleteData.gender = selectedGender;
+      this.athleteData.dateOfBirth = this.dateFormat(dateOfBirth);
+      this.athleteData.country = selectedEvents;
+      this.saveAthlete(this.athleteData);
     }
+  }
+
+  //Format Date
+  dateFormat(date: string) {
+    let format = 'yyyy-MM-dd';
+    let local = 'en-US';
+    let formattedDate = formatDate(date, format, local);
+    return this.validDateFormat(formattedDate);
+  }
+
+  validDateFormat(dateString:any) {
+    if (dateString) {
+      return dateString.replace(/\s/, 'T');
+    }
+    return null;
   }
 
 
@@ -447,7 +482,7 @@ export class AppComponent {
     }
 
 
-  compressImage(src:string, newX:number, newY:number) {//
+  compressImage(src:any, newX:number, newY:number) {//
     return new Promise((res, rej) => {
       const img = new Image();
       img.src = src;
@@ -478,4 +513,32 @@ export class AppComponent {
       console.log('Error: ', error);
     };
  }
+
+  getAllAthlete() {
+    let response: ApiResponse = new ApiResponse();
+    this.athleteService.getAllAthlete().subscribe(data => {
+      response = data;
+      let resultObj = JSON.parse(JSON.stringify(response));
+      if (resultObj.success) {
+        console.log("DATA ::::::::::::::::::::>>>>>>>>>>>>> "+ resultObj.result);
+      }
+    }, error => {
+      this.alertService.showAlertToast(this.dangerStatus, true, 20000, true, this.position, true, "Alert!", "It seems to be not working properly. Please try again later.");
+    });
+  }
+
+  saveAthlete(atthleteData: AthleteData) {
+    
+    let response: ApiResponse = new ApiResponse();
+    this.athleteService.saveAthlete(atthleteData).subscribe(data => {
+      response = data;
+      let resultObj = JSON.parse(JSON.stringify(response));
+      if (resultObj.success) {
+        console.log("DATA ::::::::::::::::::::>>>>>>>>>>>>> "+ resultObj.result);
+      }
+    }, error => {
+      this.alertService.showAlertToast(this.dangerStatus, true, 20000, true, this.position, true, "Alert!", "It seems to be not working properly. Please try again later.");
+    });
+  }
+
 }
