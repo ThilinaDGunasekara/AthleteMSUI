@@ -6,5 +6,5 @@ export class AthleteData {
     dateOfBirth: string = '';
     country: string = '';
     events: Event[]=[];
-    profileImage: string[] = [];
+    profileImage: string = '';
 } 

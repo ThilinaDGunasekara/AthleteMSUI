@@ -441,6 +441,7 @@ export class AppComponent {
       this.athleteData.gender = selectedGender;
       this.athleteData.dateOfBirth = this.dateFormat(dateOfBirth);
       this.athleteData.country = selectedEvents;
+      this.athleteData.profileImage = this.base64CompressedImage;
       this.saveAthlete(this.athleteData);
     }
   }
